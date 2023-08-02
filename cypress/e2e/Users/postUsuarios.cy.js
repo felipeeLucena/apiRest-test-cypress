@@ -10,11 +10,15 @@ describe('POST /usuarios', () => {
     const nomeCompleto = faker.person.fullName();
     const email = faker.internet.email();
     const password = faker.internet.password();
+    const emailInvalido = 'email.email.com.br'
+    const admin = 'true';
+    const padrao = 'false';
+
 
     context('Sucesso', () => {
 
         it('Cadastrar usuário ADMINISTRADOR', () => {
-            cy.postUsuarios(nomeCompleto, email, password, 'true')
+            cy.postUsuarios(nomeCompleto, email, password, admin)
                 .then((response) => {
                     expect(response.status).to.eq(201)
                     expect(response.body).to.have.property('message', 'Cadastro realizado com sucesso');
@@ -26,7 +30,7 @@ describe('POST /usuarios', () => {
         })
 
         it('Cadastrar usuário PADRÃO', () => {
-            cy.postUsuarios(nomeCompleto, email, password, 'false')
+            cy.postUsuarios(nomeCompleto, email, password, padrao)
                 .then((response) => {
                     expect(response.status).to.eq(201)
                     expect(response.body).to.have.property('message', 'Cadastro realizado com sucesso');
@@ -73,7 +77,7 @@ describe('POST /usuarios', () => {
         })
 
         it('Senha diferente de string', () => {
-            cy.postUsuarios(nomeCompleto, email, 123456, 'true')
+            cy.postUsuarios(nomeCompleto, email, 123456, admin)
                 .then((response) => {
                     expect(response.status).to.eql(400)
                     expect(response.body).to.have.property('password', 'password deve ser uma string')
@@ -81,7 +85,7 @@ describe('POST /usuarios', () => {
         })
 
         it('E-mail inválido', () => {
-            cy.postUsuarios(nomeCompleto, 'teste', password, 'true')
+            cy.postUsuarios(nomeCompleto, emailInvalido , password, admin)
                 .then((response) => {
                     expect(response.status).to.eql(400)
                     expect(response.body).to.have.property('email', "email deve ser um email válido")
