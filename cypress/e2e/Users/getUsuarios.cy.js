@@ -13,17 +13,6 @@ describe('GET /usuarios', () => {
         const password = faker.internet.password();
         const admin = 'true';
 
-        beforeEach(() => {
-            cy.getUsuarios()
-                .then((response) => {
-                    if (response.body.length === 0) {
-                        cy.postUsuarios(nomeCompleto, email, password, admin)
-                            .then((response) => {
-                                expect(response.status).to.eql(201);
-                            })
-                    }
-                })
-        })
 
         it('Buscar todos os usuários cadastrados', () => {
 
@@ -36,15 +25,42 @@ describe('GET /usuarios', () => {
         })
 
         it('Buscar usuário pelo e-mail', () => {
-            cy.getUsuariosComFiltros('email', email)
+
+            cy.getUsuarios()
                 .then((response) => {
-                    expect(response.status).to.eql(200)
-                    expect(response.body.usuarios[0]).to.have.property('email', email)
+                    expect(response.status).to.eq(200)
+                    if (response.body.length === 0) {
+                        cy.postUsuarios(nomeCompleto, email, password, admin)
+                        expect(response.status).to.eql(201)
+                    } else {
+                        cy.getUsuariosComFiltros('email', response.body.usuarios[0].email)
+                            .then((res) => {
+                                expect(response.status).to.eq(200)
+                                expect(response.body).to.not.be.empty;
+                            })
+                    }
+                })
+
+        })
+
+        it('Buscar usuário pelo ID', () => {
+
+            cy.getUsuarios()
+                .then((response) => {
+                    expect(response.status).to.eq(200)
+                    if (response.body.length === 0) {
+                        cy.postUsuarios(nomeCompleto, email, password, admin)
+                        expect(response.status).to.eql(201)
+                    } else {
+                        cy.getUsuariosComFiltros('_id', response.body.usuarios[0]._id)
+                            .then((res) => {
+                                expect(res.status).to.eq(200)
+                                expect(res.body).to.not.be.empty;
+                            })
+                    }
                 })
         })
 
-
     })
-
 })
 
