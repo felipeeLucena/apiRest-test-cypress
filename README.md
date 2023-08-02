@@ -51,7 +51,7 @@ $ npx cypress open
 $ npx cypress run
 ```
 
-<h1 align="center"> Autora </h1>
+<h1 align="center"> Autor </h1>
 
 🥷🏼 Felipe Lucena
 
