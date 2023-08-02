@@ -4,7 +4,7 @@
 
 [![Generic badge](https://img.shields.io/badge/CypressDashboard-blue.svg)](https://dashboard.cypress.io/projects/h64yoh)
 
-<h1 align="center">Sobre o projeto</h1>
+<h1 align="center">Sobre o projeto(em andamento)</h1>
 
 - A Api usada para estudo foi https://serverest.dev/ o ServeRest é uma API REST gratuita que simula uma loja virtual com intuito de servir de material de estudos de testes de API. Foram criados cenários de testes funcionais e não funcionais.
 
