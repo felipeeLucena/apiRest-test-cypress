@@ -31,6 +31,7 @@
 3. Executar o comando
 ```bash
 $ git clone https://github.com/felipeeLucena/apiRest-test-cypress.git
+```
 
 <h1 align="center">Executando os Testes</h1>
 
