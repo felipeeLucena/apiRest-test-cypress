@@ -5,3 +5,12 @@ Cypress.Commands.add('getUsuarios', () => {
     })
 })
 
+
+Cypress.Commands.add('getUsuariosComFiltros', (tipo, dado) => {
+    cy.request({
+        method: 'GET',
+        url: '/usuarios?' + tipo + '=' + dado,
+        failOnStatusCode: false
+    })
+})
+
