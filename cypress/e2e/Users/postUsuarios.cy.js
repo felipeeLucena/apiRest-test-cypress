@@ -1,3 +1,5 @@
+import { faker } from '@faker-js/faker';
+
 import { postUsuarios } from "./requests/postUsuarios"
 import { deleteUsuario } from "./requests/deleteUsuarios"
 
@@ -5,10 +7,14 @@ import { deleteUsuario } from "./requests/deleteUsuarios"
 
 describe('POST /usuarios', () => {
 
+    const nomeCompleto = faker.person.fullName();
+    const email = faker.internet.email();
+    const password = faker.internet.password();
+
     context('Sucesso', () => {
 
         it('Cadastrar usuário ADMINISTRADOR', () => {
-            cy.postUsuarios('Beltrando da Casa de Pantanha', 'teste@teste.com', 'teste', 'true')
+            cy.postUsuarios(nomeCompleto, email, password, 'true')
                 .then((response) => {
                     expect(response.status).to.eq(201)
                     expect(response.body).to.have.property('message', 'Cadastro realizado com sucesso');
@@ -20,7 +26,7 @@ describe('POST /usuarios', () => {
         })
 
         it('Cadastrar usuário PADRÃO', () => {
-            cy.postUsuarios('Fulano da Casa de Pantanha', 'teste1@teste.com', 'teste1', 'false')
+            cy.postUsuarios(nomeCompleto, email, password, 'false')
                 .then((response) => {
                     expect(response.status).to.eq(201)
                     expect(response.body).to.have.property('message', 'Cadastro realizado com sucesso');
@@ -59,7 +65,7 @@ describe('POST /usuarios', () => {
         });
 
         it('Campo administrador diferente de string', () => {
-            cy.postUsuarios('Beltrando da Casa de Pantanha', 'teste@teste.com', '123456' , true)
+            cy.postUsuarios(nomeCompleto, email, password, true)
                 .then((response) => {
                     expect(response.status).to.eql(400)
                     expect(response.body).to.have.property('administrador', "administrador deve ser 'true' ou 'false'")
@@ -67,7 +73,7 @@ describe('POST /usuarios', () => {
         })
 
         it('Senha diferente de string', () => {
-            cy.postUsuarios('Beltrando da Casa de Pantanha', 'teste@teste.com', 123456 , 'true')
+            cy.postUsuarios(nomeCompleto, email, 123456, 'true')
                 .then((response) => {
                     expect(response.status).to.eql(400)
                     expect(response.body).to.have.property('password', 'password deve ser uma string')
@@ -75,7 +81,7 @@ describe('POST /usuarios', () => {
         })
 
         it('E-mail inválido', () => {
-            cy.postUsuarios('Beltrando da Casa de Pantanha', 'testeteste.com', '123456' , 'true')
+            cy.postUsuarios(nomeCompleto, 'teste', password, 'true')
                 .then((response) => {
                     expect(response.status).to.eql(400)
                     expect(response.body).to.have.property('email', "email deve ser um email válido")
