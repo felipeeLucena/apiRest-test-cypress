@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { postUsuarios } from "./requests/postUsuarios"
-import { deleteUsuario } from "./requests/deleteUsuarios"
+import { deleteUsuario } from "./requests/deleteUsuario"
 
 /// <reference types= "cypress" />
 
