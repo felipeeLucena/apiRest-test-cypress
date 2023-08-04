@@ -1,5 +1,5 @@
 Cypress.Commands.add('getUsuarios', () => {
-    cy.request({
+    cy.api({
         method: 'GET',
         url: "/usuarios",
     })
@@ -7,7 +7,7 @@ Cypress.Commands.add('getUsuarios', () => {
 
 
 Cypress.Commands.add('getUsuariosComFiltros', (tipo, dado) => {
-    cy.request({
+    cy.api({
         method: 'GET',
         url: '/usuarios?' + tipo + '=' + dado,
         failOnStatusCode: false

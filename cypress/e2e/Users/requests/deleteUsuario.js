@@ -1,5 +1,5 @@
 Cypress.Commands.add('deleteUsuario', (id) => {
-    cy.request({
+    cy.api({
         method: 'DELETE',
         url: "/usuarios/" + id,
     })

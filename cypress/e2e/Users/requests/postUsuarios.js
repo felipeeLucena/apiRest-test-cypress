@@ -1,5 +1,5 @@
 Cypress.Commands.add('postUsuarios', (nome, email, password, admin) => {
-    cy.request({
+    cy.api({
         method: 'POST',
         url: "/usuarios",
         body: {
@@ -7,6 +7,7 @@ Cypress.Commands.add('postUsuarios', (nome, email, password, admin) => {
             "email": email,
             "password": password,
             "administrador": admin,
-        },  failOnStatusCode: false
+        }
+        , failOnStatusCode: false
     })
 })

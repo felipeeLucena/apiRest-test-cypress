@@ -47,7 +47,7 @@ describe('POST /usuarios', () => {
         let _id;
 
         it('Cadastro duplicado', () => {
-            cy.postUsuarios('Beltrando da Casa de Pantanha', 'teste@teste.com', 'teste', 'true')
+            cy.postUsuarios(nomeCompleto, email, password, admin)
                 .then((response) => {
                     expect(response.status).to.eq(201);
                     expect(response.body).to.have.property('message', 'Cadastro realizado com sucesso');
@@ -55,7 +55,7 @@ describe('POST /usuarios', () => {
                     _id = response.body._id;
                 });
 
-            cy.postUsuarios('Beltrando da Casa de Pantanha', 'teste@teste.com', 'teste', 'true')
+            cy.postUsuarios(nomeCompleto, email, password, admin)
                 .then((response) => {
                     expect(response.status).to.eq(400);
                     expect(response.body).to.have.property('message', 'Este email já está sendo usado');

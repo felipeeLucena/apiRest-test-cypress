@@ -13,6 +13,7 @@
     "cypress": "^12.17.2"
   },
   "devDependencies": {
+    "@bahmutov/cy-api": "^2.2.5",
     "@faker-js/faker": "^8.0.2"
   }
 }
