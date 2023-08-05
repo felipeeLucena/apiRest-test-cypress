@@ -12,6 +12,20 @@ describe('GET /usuarios', () => {
         const email = faker.internet.email();
         const password = faker.internet.password();
         const admin = 'true';
+        let hasUser
+
+        beforeEach(() => {
+            cy.getUsuarios()
+                .then((response) => {
+                    expect(response.status).to.eq(200)
+                    if (response.body.length === 0) {
+                        cy.postUsuarios(nomeCompleto, email, password, admin)
+                        expect(response.status).to.eql(201)
+                    } else {
+                        hasUser = true
+                    }
+                })
+        })
 
 
         it('Buscar todos os usuários cadastrados', () => {
@@ -29,10 +43,8 @@ describe('GET /usuarios', () => {
             cy.getUsuarios()
                 .then((response) => {
                     expect(response.status).to.eq(200)
-                    if (response.body.length === 0) {
-                        cy.postUsuarios(nomeCompleto, email, password, admin)
-                        expect(response.status).to.eql(201)
-                    } else {
+                    console.log(hasUser)
+                    if (hasUser === true) {
                         cy.getUsuariosComFiltros('email', response.body.usuarios[0].email)
                             .then((res) => {
                                 expect(response.status).to.eq(200)
@@ -43,15 +55,12 @@ describe('GET /usuarios', () => {
 
         })
 
-        it('Buscar usuário pelo ID', () => {
+        it.only('Buscar usuário pelo ID', () => {
 
             cy.getUsuarios()
                 .then((response) => {
                     expect(response.status).to.eq(200)
-                    if (response.body.length === 0) {
-                        cy.postUsuarios(nomeCompleto, email, password, admin)
-                        expect(response.status).to.eql(201)
-                    } else {
+                    if (hasUser === true) {
                         cy.getUsuariosComFiltros('_id', response.body.usuarios[0]._id)
                             .then((res) => {
                                 expect(res.status).to.eq(200)
