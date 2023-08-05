@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { postUsuarios } from "./requests/postUsuarios"
+import { postUsuario } from "./requests/postUsuario"
 import { deleteUsuario } from "./requests/deleteUsuario"
 
 /// <reference types= "cypress" />
@@ -18,7 +18,7 @@ describe('POST /usuarios', () => {
     context('Sucesso', () => {
 
         it('Cadastrar usuário ADMINISTRADOR', () => {
-            cy.postUsuarios(nomeCompleto, email, password, admin)
+            cy.postUsuario(nomeCompleto, email, password, admin)
                 .then((response) => {
                     expect(response.status).to.eq(201)
                     expect(response.body).to.have.property('message', 'Cadastro realizado com sucesso');
@@ -30,7 +30,7 @@ describe('POST /usuarios', () => {
         })
 
         it('Cadastrar usuário PADRÃO', () => {
-            cy.postUsuarios(nomeCompleto, email, password, padrao)
+            cy.postUsuario(nomeCompleto, email, password, padrao)
                 .then((response) => {
                     expect(response.status).to.eq(201)
                     expect(response.body).to.have.property('message', 'Cadastro realizado com sucesso');
@@ -47,7 +47,7 @@ describe('POST /usuarios', () => {
         let _id;
 
         it('Cadastro duplicado', () => {
-            cy.postUsuarios(nomeCompleto, email, password, admin)
+            cy.postUsuario(nomeCompleto, email, password, admin)
                 .then((response) => {
                     expect(response.status).to.eq(201);
                     expect(response.body).to.have.property('message', 'Cadastro realizado com sucesso');
@@ -55,7 +55,7 @@ describe('POST /usuarios', () => {
                     _id = response.body._id;
                 });
 
-            cy.postUsuarios(nomeCompleto, email, password, admin)
+            cy.postUsuario(nomeCompleto, email, password, admin)
                 .then((response) => {
                     expect(response.status).to.eq(400);
                     expect(response.body).to.have.property('message', 'Este email já está sendo usado');
@@ -69,7 +69,7 @@ describe('POST /usuarios', () => {
         });
 
         it('Campo administrador diferente de string', () => {
-            cy.postUsuarios(nomeCompleto, email, password, true)
+            cy.postUsuario(nomeCompleto, email, password, true)
                 .then((response) => {
                     expect(response.status).to.eql(400)
                     expect(response.body).to.have.property('administrador', "administrador deve ser 'true' ou 'false'")
@@ -77,7 +77,7 @@ describe('POST /usuarios', () => {
         })
 
         it('Senha diferente de string', () => {
-            cy.postUsuarios(nomeCompleto, email, 123456, admin)
+            cy.postUsuario(nomeCompleto, email, 123456, admin)
                 .then((response) => {
                     expect(response.status).to.eql(400)
                     expect(response.body).to.have.property('password', 'password deve ser uma string')
@@ -85,7 +85,7 @@ describe('POST /usuarios', () => {
         })
 
         it('E-mail inválido', () => {
-            cy.postUsuarios(nomeCompleto, emailInvalido , password, admin)
+            cy.postUsuario(nomeCompleto, emailInvalido , password, admin)
                 .then((response) => {
                     expect(response.status).to.eql(400)
                     expect(response.body).to.have.property('email', "email deve ser um email válido")
@@ -93,7 +93,7 @@ describe('POST /usuarios', () => {
         })
 
         it('Submeter formulário sem dados nos campos', () => {
-            cy.postUsuarios()
+            cy.postUsuario()
                 .then((response) => {
                     expect(response.status).to.eql(400)
                     expect(response.body).to.have.property('nome', 'nome é obrigatório')

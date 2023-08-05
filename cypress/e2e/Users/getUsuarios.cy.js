@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { getUsuarios, getUsuariosComFiltros } from "./requests/getUsuarios"
-import { postUsuarios } from "./requests/postUsuarios"
+import { postUsuarios } from "./requests/postUsuario"
 
 /// <reference types= "cypress" />
 

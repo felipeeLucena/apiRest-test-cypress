@@ -1,4 +1,4 @@
-Cypress.Commands.add('postUsuarios', (nome, email, password, admin) => {
+Cypress.Commands.add('postUsuario', (nome, email, password, admin) => {
     cy.api({
         method: 'POST',
         url: "/usuarios",

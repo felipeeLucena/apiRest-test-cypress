@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { getUsuarioId } from './requests/getUsuariosId'
-import { postUsuarios } from "./requests/postUsuarios"
+import { postUsuario } from "./requests/postUsuario"
 import { deleteUsuario } from "./requests/deleteUsuario"
 
 /// <reference types= "cypress" />
@@ -14,7 +14,7 @@ describe('GET /usuarios/id', () => {
             const password = faker.internet.password();
             const admin = 'true';
 
-            cy.postUsuarios(nomeCompleto, email, password, admin)
+            cy.postUsuario(nomeCompleto, email, password, admin)
                 .then((response) => {
                     expect(response.status).to.eql(201);
                     _id = response.body._id;
