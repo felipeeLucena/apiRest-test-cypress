@@ -12,9 +12,7 @@ describe('POST /produtos', () => {
     const password = faker.internet.password();
     const admin = 'true';
     const padrao = 'false';
-
     let _id
-
     context('Sucesso', () => {
         beforeEach(() => {
             cy.postUsuario(nomeCompleto, email, password, admin)
@@ -34,24 +32,20 @@ describe('POST /produtos', () => {
             const descricaoProduto = faker.commerce.productDescription()
             const quantidadeProduto = 40
             const jwt = Cypress.env('authorization')
-
             cy.postProduto(nomeProduto, precoProduto, descricaoProduto, quantidadeProduto, jwt)
                 .then((res) => {
                     expect(res.status).to.eql(201)
                     expect(res.body).to.have.property('message', 'Cadastro realizado com sucesso')
                     expect(res.body._id).is.not.null
-
-                    cy.deleteProduto(res.body._id)
+                    cy.deleteProduto(res.body._id, jwt)
                         .then((res) => {
                             expect(res.status).to.eql(200)
                         })
                 })
-
             cy.deleteUsuario(_id)
                 .then((res) => {
                     expect(res.status).to.eql(200)
                 })
-
         })
     })
 
@@ -69,15 +63,13 @@ describe('POST /produtos', () => {
                 })
         })
 
-        it.only('Cadastrar produto já existente', () => {
-
+        it('Cadastrar produto já existente', () => {
             const nomeProduto = faker.commerce.productName()
             const precoProduto = 150
             const descricaoProduto = faker.commerce.productDescription()
             const quantidadeProduto = 40
             const jwt = Cypress.env('authorization')
             let idProduto
-
             cy.postProduto(nomeProduto, precoProduto, descricaoProduto, quantidadeProduto, jwt)
                 .then((res) => {
                     expect(res.status).to.eql(201)
@@ -89,40 +81,33 @@ describe('POST /produtos', () => {
                 .then((res) => {
                     expect(res.status).to.eql(400)
                     expect(res.body).to.have.property('message', 'Já existe produto com esse nome')
-
                     cy.deleteProduto(idProduto, jwt)
                         .then((res) => {
                             expect(res.status).to.eql(200)
                         })
                 })
-
             cy.deleteUsuario(_id)
                 .then((res) => {
                     expect(res.status).to.eql(200)
                 })
         })
-
         it('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais', () => {
-
             const nomeProduto = faker.commerce.productName()
             const precoProduto = 150
             const descricaoProduto = faker.commerce.productDescription()
             const quantidadeProduto = 40
-
             cy.postProduto(nomeProduto, precoProduto, descricaoProduto, quantidadeProduto)
                 .then((res) => {
                     expect(res.status).to.eql(401)
                     expect(res.body).to.have.property('message', 'Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')
                     expect(res.body._id).is.not.null
                 })
-
             cy.deleteUsuario(_id)
                 .then((res) => {
                     expect(res.status).to.eql(200)
                 })
         })
     })
-
     context('Falha - Não Admin', () => {
         beforeEach(() => {
             cy.postUsuario(nomeCompleto, email, password, padrao)
@@ -136,21 +121,18 @@ describe('POST /produtos', () => {
                     Cypress.env('authorization', res.body.authorization)
                 })
         })
-
         it('Rota exclusiva para administradores', () => {
             const nomeProduto = faker.commerce.productName()
             const precoProduto = 150
             const descricaoProduto = faker.commerce.productDescription()
             const quantidadeProduto = 40
             const jwt = Cypress.env('authorization')
-
             cy.postProduto(nomeProduto, precoProduto, descricaoProduto, quantidadeProduto, jwt)
                 .then((res) => {
                     expect(res.status).to.eql(403)
                     expect(res.body).to.have.property('message', 'Rota exclusiva para administradores')
                     expect(res.body._id).is.not.null
                 })
-
             cy.deleteUsuario(_id)
                 .then((res) => {
                     expect(res.status).to.eql(200)

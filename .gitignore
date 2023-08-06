@@ -1,4 +1,5 @@
 *.log
 node_modules/
 cypress/downloads/
+cypress/support/Imports.js
 

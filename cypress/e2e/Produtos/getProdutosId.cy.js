@@ -20,7 +20,6 @@ describe('GET /produtos/id', () => {
 
     let _id
     let _idProduto
-
     context('Sucesso', () => {
         beforeEach(() => {
             cy.postUsuario(nomeCompleto, email, password, admin)
@@ -42,7 +41,6 @@ describe('GET /produtos/id', () => {
                         })
                 })
         })
-
         it('Buscar produto pelo ID', () => {
             const jwt = Cypress.env('authorization')
             cy.getProdutoId(_idProduto)
@@ -54,17 +52,14 @@ describe('GET /produtos/id', () => {
                     expect(res.body).to.have.property('descricao', descricaoProduto);
                     expect(res.body).to.have.property('quantidade', quantidadeProduto);
                 })
-
             cy.deleteProduto(_idProduto, jwt)
                 .then((res) => {
                     expect(res.status).to.eq(200);
                 })
-
             cy.deleteUsuario(_id)
                 .then((res) => {
                     expect(res.status).to.eq(200);
                 })
-
         })
     })
 
