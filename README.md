@@ -60,5 +60,5 @@ $ npx cypress run
 🎓 Pos-Graduado em Em Engenharia de Software Com E Ênfase Em Qualidade e Teste de Software.
 
 📲 Rede de contato:
-[Linkedin](www.linkedin.com/in/felipeelucena)
+[Linkedin](www.linkedin.com/in/felipeeLucena)
 
