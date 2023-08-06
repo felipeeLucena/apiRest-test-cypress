@@ -60,7 +60,7 @@ describe('PUT /produtos', () => {
                     expect(res.status).to.eq(200);
                 })
         })
-        it.only('Inserir dados com PUT', () => {
+        it('Inserir dados com PUT', () => {
             const nomeProdutoNovo = faker.commerce.productName()
             const precoProdutoNovo = 170
             const descricaoProdutoNovo = faker.commerce.productDescription()
@@ -85,5 +85,47 @@ describe('PUT /produtos', () => {
                     expect(res.status).to.eq(200);
                 })
         })
+    })
+    context('Falha', () => {
+        beforeEach(() => {
+            cy.postUsuario(nomeCompleto, email, password, admin)
+                .then(function (response) {
+                    expect(response.status).to.eql(201);
+                    _id = response.body._id;
+                });
+            cy.postLogin(email, password)
+                .then((res) => {
+                    expect(res.status).to.eql(200)
+                    Cypress.env('authorization', res.body.authorization)
+                    cy.postProduto(nomeProduto, precoProduto, descricaoProduto, quantidadeProduto, Cypress.env('authorization'))
+                        .then((res) => {
+                            expect(res.status).to.eql(201)
+                            expect(res.body).to.have.property('message', 'Cadastro realizado com sucesso')
+                            expect(res.body._id).is.not.null
+                            _idProduto = res.body._id
+                        })
+                })
+        });
+        it('Inserir produto com put com um nome já cadastrado', () => {
+            const precoProdutoNovo = 170
+            const descricaoProdutoNovo = faker.commerce.productDescription()
+            const quantidadeProdutoNovo = 45
+            const jwt = Cypress.env('authorization')
+            cy.putProduto('idInexistente@@', nomeProduto, precoProdutoNovo, descricaoProdutoNovo, quantidadeProdutoNovo, jwt)
+                .then((response) => {
+                    expect(response.status).to.eql(400)
+                    expect(response.body).to.have.property('message', 'Já existe produto com esse nome')
+                    expect(response.body._id).is.not.null
+                })
+            cy.deleteProduto(_idProduto, jwt)
+                .then((res) => {
+                    expect(res.status).to.eq(200);
+                })
+            cy.deleteUsuario(_id)
+                .then((res) => {
+                    expect(res.status).to.eq(200);
+                })
+        })
+
     })
 })
