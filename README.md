@@ -60,5 +60,5 @@ $ npx cypress run
 🎓 Pos-Graduado em Em Engenharia de Software Com E Ênfase Em Qualidade e Teste de Software.
 
 📲 Rede de contato:
-[Linkedin](www.linkedin.com/in/felipeeLucena)
+<a href="https://www.linkedin.com/in/felipe-teixeira-738719179/" target="_blank"><img src="https://raw.githubusercontent.com/maurodesouza/profile-readme-generator/master/src/assets/icons/social/linkedin/default.svg" width="52" height="40" alt="linkedin logo" style="max-width: 100%;"></a>
 
